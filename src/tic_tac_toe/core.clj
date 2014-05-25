@@ -9,15 +9,16 @@
 
 (def side 3)
 (defn new-board
-  "Generates a side * side board.
-   The board is represented as a one dimension vector."
+  "Generates a side * side empty board."
   [side]
   (vec (repeat (* side side) \_)))
 
 ;;--- moves
 ;; read-move assumes a properly formatted move was entered, throws an exception
 ;; otherwise.
-(defn- read-move
+(defn read-move
+  "Reads a move from the console. Assumes that the move is correctly formatted
+   as: \"row col\", both numeric, 1-based, indices."
   []
   (let [input (read-line)]
     (map #(Integer/parseInt %) (string/split input #"\s+"))))
@@ -32,7 +33,9 @@
   (+ (* (dec row) side)
      (dec col)))
 
-(defn- valid-move?
+(defn valid-move?
+  "Returns true if the move references an empty square. Returns logical false
+   if the indices are out of bounds or the square is already used."
   [move board]
   (and (valid-index? move)
        (= \_ (board (move->index move)))))
@@ -49,11 +52,15 @@
               col-indices)))
 
 (defn remaining?
+  "Returns true if there are empty squares in the board, logical false
+   otherwise."
   [board]
   (some #{\_} board))
 
 (defn winner?
-  "Returns true if there are 3 of the same kind on a row. TODO: diagonals."
+  "Returns true if the boards contains a winning row or column.
+
+  TODO: diagonals."
   [board]
   (let [rows (partition side board)
         cols (columns board)
@@ -66,7 +73,7 @@
 
 ;;--- step
 (defn step
-  "Returns a new board after applying move by player."
+  "Applies move by player to board and returns the new board."
   [move player board]
   (let [index (move->index move)]
     (assoc board index player)))
@@ -90,6 +97,8 @@
 
 (defn -main
   [& args]
+  (let [initial-board (new-board side)
+        initial-player \x])
   (println "tic tac toe"))
 
 
