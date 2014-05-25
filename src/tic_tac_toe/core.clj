@@ -22,23 +22,20 @@
   (let [input (read-line)]
     (map #(Integer/parseInt %) (string/split input #"\s+"))))
 
+(defn- valid-index?
+  [[row col]]
+  (and (pos? row) (<= row side)
+       (pos? col) (<= col side)))
+
 (defn- move->index
   [[row col]]
-  (if (and (pos? row) (<= row side)
-           (pos? col) (<= col side))
-
-    (+ (* (dec row) side)
-       (dec col))
-
-    -1))
+  (+ (* (dec row) side)
+     (dec col)))
 
 (defn- valid-move?
   [move board]
-  (let [index (move->index move)]
-
-    (and (>= index 0)
-         (< index (count board))
-         (= \_ (board index)))))
+  (and (valid-index? move)
+       (= \_ (board (move->index move)))))
 
 (defn- columns
   [board]
