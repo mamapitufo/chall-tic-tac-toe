@@ -18,16 +18,23 @@
     (map #(Integer/parseInt %) (string/split input #"\s+"))))
 
 
+;;--- render
+(defn- format-empty
+  [row]
+  (string/replace row \_ \space))
+
 (defn- render-row
   [row]
-  (string/join "|" row))
+  (format-empty (string/join "|" row)))
 
 (defn render
   "Renders a board for screen output."
   [board]
-  (println (string/join "\n"
-                        (map render-row (partition side board)))))
+  (let [rows (map render-row (partition side board))
+        sep (str "\n" (render-row (repeat side \-)) "\n")]
+    (println (string/join sep rows))))
 
 (defn -main
   [& args]
   (println "tic tac toe"))
+
