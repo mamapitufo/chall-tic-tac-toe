@@ -17,6 +17,23 @@
   (let [input (read-line)]
     (map #(Integer/parseInt %) (string/split input #"\s+"))))
 
+(defn- move->index
+  [[row col]]
+  (if (and (pos? row) (<= row side)
+           (pos? col) (<= col side))
+
+    (+ (* (dec row) side)
+       (dec col))
+
+    -1))
+
+(defn- valid-move?
+  [move board]
+  (let [index (move->index move)]
+
+    (and (>= index 0)
+         (< index (count board))
+         (= \_ (board index)))))
 
 ;;--- render
 (defn- format-empty
@@ -33,6 +50,7 @@
   (let [rows (map render-row (partition side board))
         sep (str "\n" (render-row (repeat side \-)) "\n")]
     (println (string/join sep rows))))
+
 
 (defn -main
   [& args]
