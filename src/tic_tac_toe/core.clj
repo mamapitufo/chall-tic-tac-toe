@@ -4,10 +4,10 @@
 
 (def side 3)
 (defn new-board
-  "Generates a side * side board. The board is represented as a one dimension
-   seq."
+  "Generates a side * side board.
+   The board is represented as a one dimension vector."
   [side]
-  (repeat (* side side) \_))
+  (vec (repeat (* side side) \_)))
 
 
 (defn- render-row
