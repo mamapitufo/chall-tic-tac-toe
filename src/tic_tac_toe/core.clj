@@ -2,10 +2,10 @@
   (:require [clojure.string :as string])
   (:gen-class))
 
-(def current-player \x)
 (defn next-player
+  "Receives the current player and returns who's next."
   [curr]
-  (if (= \x curr) \o \x))
+  ({\x \o, \o \x} curr))
 
 (def side 3)
 (defn new-board
