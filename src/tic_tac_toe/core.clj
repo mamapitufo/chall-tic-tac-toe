@@ -2,6 +2,11 @@
   (:require [clojure.string :as string])
   (:gen-class))
 
+(def current-player \x)
+(defn next-player
+  [curr]
+  (if (= \x curr) \o \x))
+
 (def side 3)
 (defn new-board
   "Generates a side * side board.
