@@ -9,6 +9,14 @@
   [side]
   (vec (repeat (* side side) \_)))
 
+;;--- moves
+;; read-move assumes a properly formatted move was entered, throws an exception
+;; otherwise.
+(defn- read-move
+  []
+  (let [input (read-line)]
+    (map #(Integer/parseInt %) (string/split input #"\s+"))))
+
 
 (defn- render-row
   [row]
