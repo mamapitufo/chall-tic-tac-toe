@@ -51,6 +51,10 @@
               ()
               col-indices)))
 
+(defn remaining?
+  [board]
+  (some #{\_} board))
+
 (defn winner?
   "Returns true if there are 3 of the same kind on a row. TODO: diagonals."
   [board]
@@ -58,7 +62,7 @@
         cols (columns board)
         diagonals ()
         non-empty (remove #(and (apply = %)
-                                (some #{\_} %))
+                                (remaining? %))
                           (concat rows cols diagonals))]
 
     (some #(apply = %) non-empty)))
@@ -112,4 +116,9 @@
   [\x \o \_
    \_ \o \x
    \x \o \x])
+
+(def finished
+  [\x \o \o
+   \o \o \x
+   \x \x \o])
 
