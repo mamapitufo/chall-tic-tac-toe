@@ -35,6 +35,13 @@
          (< index (count board))
          (= \_ (board index)))))
 
+;;--- step
+(defn step
+  "Returns a new board after applying move by player."
+  [move player board]
+  (let [index (move->index move)]
+    (assoc board index player)))
+
 ;;--- render
 (defn- format-empty
   [row]
