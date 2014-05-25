@@ -40,6 +40,29 @@
          (< index (count board))
          (= \_ (board index)))))
 
+(defn- columns
+  [board]
+  (let [indices (range (* side side))
+        col-indices (map second
+                         (group-by #(mod % side) indices))]
+
+    (reduce (fn [cols i]
+              (cons (map board i) cols))
+              ()
+              col-indices)))
+
+(defn winner?
+  "Returns true if there are 3 of the same kind on a row. TODO: diagonals."
+  [board]
+  (let [rows (partition side board)
+        cols (columns board)
+        diagonals ()
+        non-empty (remove #(and (apply = %)
+                                (some #{\_} %))
+                          (concat rows cols diagonals))]
+
+    (some #(apply = %) non-empty)))
+
 ;;--- step
 (defn step
   "Returns a new board after applying move by player."
