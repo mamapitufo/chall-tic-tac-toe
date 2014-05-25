@@ -14,8 +14,6 @@
   (vec (repeat (* side side) \_)))
 
 ;;--- moves
-;; read-move assumes a properly formatted move was entered, throws an exception
-;; otherwise.
 (defn read-move
   "Reads a move from the console. Assumes that the move is correctly formatted
    as: \"row col\", both numeric, 1-based, indices."
@@ -97,10 +95,29 @@
 
 (defn -main
   [& args]
+  (println "tic tac toe")
   (let [initial-board (new-board side)
-        initial-player \x])
-  (println "tic tac toe"))
+        initial-player \x]
+    (loop [board initial-board
+           player initial-player]
+      (render board)
+      (cond
+        ;; we have a winner
+        (winner? board)
+        (println (str "Player '" (next-player player) "' wins!"))
 
+        ;; some moves are still available
+        (remaining? board)
+        (let [move (read-move)]
+          (if (valid-move? move board)
+            (recur (step move player board)
+                   (next-player player))
+            (do
+              (println "Invalid move!")
+              (recur board
+                     player))))
+
+        :else (println "It's a tie.")))))
 
 ;;------------------------- ex data
 (def numeric-board
