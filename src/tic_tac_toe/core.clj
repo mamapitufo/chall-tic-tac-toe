@@ -119,29 +119,3 @@
 
         :else (println "It's a tie.")))))
 
-;;------------------------- ex data
-(def numeric-board
-  [1 2 3
-   4 5 6
-   7 8 9])
-
-(def mixed-board
-  [\_ \x \_
-   \o \x \_
-   \_ \o \_])
-
-(def win-row
-  [\_ \x \o
-   \x \x \x
-   \o \o \_])
-
-(def win-col
-  [\x \o \_
-   \_ \o \x
-   \x \o \x])
-
-(def finished
-  [\x \o \o
-   \o \o \x
-   \x \x \o])
-
