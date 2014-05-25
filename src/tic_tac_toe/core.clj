@@ -3,11 +3,15 @@
   (:gen-class))
 
 (defn next-player
-  "Receives the current player and returns who's next."
+  "Who's next?"
   [curr]
   ({\x \o, \o \x} curr))
 
-(def side 3)
+(defn side
+  "Returns the size of one side of a square board."
+  [board]
+  (sqrt (count board)))
+
 (defn new-board
   "Generates a side * side empty board."
   [side]
@@ -22,25 +26,27 @@
     (map #(Integer/parseInt %) (string/split input #"\s+"))))
 
 (defn- valid-index?
-  [[row col]]
+  [[row col] board]
+  (let [side (side board)])
   (and (pos? row) (<= row side)
        (pos? col) (<= col side)))
 
 (defn- move->index
-  [[row col]]
-  (+ (* (dec row) side)
+  [[row col] board]
+  (+ (* (dec row) (side board)
      (dec col)))
 
 (defn valid-move?
   "Returns true if the move references an empty square. Returns logical false
    if the indices are out of bounds or the square is already used."
   [move board]
-  (and (valid-index? move)
-       (= \_ (board (move->index move)))))
+  (and (valid-index? move board)
+       (= \_ (board (move->index move board)))))
 
 (defn- columns
   [board]
-  (let [indices (range (* side side))
+  (let [side (side board)
+        indices (range (* side side))
         col-indices (map second
                          (group-by #(mod % side) indices))]
 
@@ -60,9 +66,11 @@
 
   TODO: diagonals."
   [board]
-  (let [rows (partition side board)
+  (let [side (side board)
+        rows (partition side board)
         cols (columns board)
         diagonals ()
+
         non-empty (remove #(and (apply = %)
                                 (remaining? %))
                           (concat rows cols diagonals))]
@@ -73,30 +81,13 @@
 (defn step
   "Applies move by player to board and returns the new board."
   [move player board]
-  (let [index (move->index move)]
+  (let [index (move->index move board)]
     (assoc board index player)))
-
-;;--- render
-(defn- format-empty
-  [row]
-  (string/replace row \_ \space))
-
-(defn- render-row
-  [row]
-  (format-empty (string/join "|" row)))
-
-(defn render
-  "Renders a board for screen output."
-  [board]
-  (let [rows (map render-row (partition side board))
-        sep (str "\n" (render-row (repeat side \-)) "\n")]
-    (println (string/join sep rows))))
-
 
 (defn -main
   [& args]
   (println "tic tac toe")
-  (let [initial-board (new-board side)
+  (let [initial-board (new-board 3)
         initial-player \x]
     (loop [board initial-board
            player initial-player]
