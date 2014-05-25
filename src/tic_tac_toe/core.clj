@@ -1,5 +1,6 @@
 (ns tic-tac-toe.core
-  (:require [clojure.string :as string])
+  (:require [clojure.math.numeric-tower :refer [sqrt]]
+            [clojure.string :as string])
   (:gen-class))
 
 (defn next-player
@@ -27,13 +28,13 @@
 
 (defn- valid-index?
   [[row col] board]
-  (let [side (side board)])
-  (and (pos? row) (<= row side)
-       (pos? col) (<= col side)))
+  (let [s (side board)]
+    (and (pos? row) (<= row s)
+         (pos? col) (<= col s))))
 
 (defn- move->index
   [[row col] board]
-  (+ (* (dec row) (side board)
+  (+ (* (dec row) (side board))
      (dec col)))
 
 (defn valid-move?
@@ -45,10 +46,10 @@
 
 (defn- columns
   [board]
-  (let [side (side board)
-        indices (range (* side side))
+  (let [s (side board)
+        indices (range (* s s))
         col-indices (map second
-                         (group-by #(mod % side) indices))]
+                         (group-by #(mod % s) indices))]
 
     (reduce (fn [cols i]
               (cons (map board i) cols))
@@ -66,8 +67,8 @@
 
   TODO: diagonals."
   [board]
-  (let [side (side board)
-        rows (partition side board)
+  (let [s (side board)
+        rows (partition s board)
         cols (columns board)
         diagonals ()
 
@@ -76,6 +77,23 @@
                           (concat rows cols diagonals))]
 
     (some #(apply = %) non-empty)))
+
+;;-- render
+(defn- format-empty
+  [row]
+  (string/replace row \_ \space))
+
+(defn- render-row
+  [row]
+  (format-empty (string/join "|" row)))
+
+(defn render
+  "Renders a board for screen output."
+  [board]
+  (let [s (side board)
+        rows (map render-row (partition s board))
+        sep (str "\n" (render-row (repeat s \-)) "\n")]
+    (println (string/join sep rows))))
 
 ;;--- step
 (defn step
