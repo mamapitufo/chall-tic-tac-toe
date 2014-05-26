@@ -5,6 +5,16 @@
    \o \x \_
    \_ \o \_])
 
+(def in-progress-x-11
+  [\x \x \_
+   \o \x \_
+   \_ \o \_])
+
+(def in-progress-x-23
+  [\_ \x \_
+   \o \x \x
+   \_ \o \_])
+
 (def tied-game
   [\x \o \o
    \o \o \x

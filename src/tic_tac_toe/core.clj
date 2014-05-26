@@ -8,6 +8,11 @@
   [curr]
   ({\x \o, \o \x} curr))
 
+(defn- invalid-side?
+  [n]
+  (not (and (pos? n)
+            (integer? n))))
+
 ;;--- Board
 (defn side
   "Returns the size of one side of a square board."
@@ -15,8 +20,11 @@
   (sqrt (count board)))
 
 (defn new-board
-  "Generates a side * side empty board."
+  "Generates a side * side empty board. side must be a positive integer."
   [side]
+  (when (invalid-side? side)
+    (throw (Exception. "side must be a positive integer.")))
+
   (vec (repeat (* side side) \_)))
 
 ;;--- Player Moves
