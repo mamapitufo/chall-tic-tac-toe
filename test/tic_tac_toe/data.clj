@@ -5,6 +5,11 @@
    \o \x \_
    \_ \o \_])
 
+(def tied-game
+  [\x \o \o
+   \o \o \x
+   \x \x \o])
+
 (def winning-row-x
   [\_ \x \o
    \x \x \x
@@ -25,10 +30,15 @@
    \x \o \o
    \x \_ \x])
 
-(def tied-game
-  [\x \o \o
-   \o \o \x
-   \x \x \o])
+(def winning-diag-x
+  [\x \_ \o
+   \x \o \_
+   \x \o \x])
+
+(def winning-diag-o
+  [\x \x \o
+   \_ \o \_
+   \o \_ \x])
 
 (def empty-board
   [\_ \_ \_
