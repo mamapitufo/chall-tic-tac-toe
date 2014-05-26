@@ -59,7 +59,9 @@
 
 (defn- diagonals
   [board]
-  ())
+  (let [rows (rows board)]
+    (vector (map-indexed #(nth %2 %1) rows)
+            (map-indexed #(nth %2 %1) (reverse rows)))))
 
 (defn empty-cells?
   "Returns true if there are empty squares in the coll of cells, logical false
@@ -68,9 +70,7 @@
   (some #{\_} coll))
 
 (defn winner?
-  "Returns true if the boards contains a winning row or column.
-
-  TODO: diagonals."
+  "Returns true if the boards contains a winning row or column."
   [board]
   (let [candidates (concat (rows board)
                            (columns board)
