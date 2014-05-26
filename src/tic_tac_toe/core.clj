@@ -27,17 +27,15 @@
 
   (vec (repeat (* side side) \_)))
 
-;;--- Player Moves
-(defn read-move
-  "Reads a move from the console. Assumes that the move is correctly formatted
-   as: \"row col\": both numeric, 1-based, indices."
+;;--- Commands
+(defn read-command
+  "Reads a command from the console."
   [player]
   (print (str "next move for " player ": "))
   (flush)
+  (read-line))
 
-  (let [input (read-line)]
-    (map #(Integer/parseInt %) (string/split input #"\s+"))))
-
+;;--- Player Moves
 (defn- valid-index?
   [[row col] board]
   (let [s (side board)]
@@ -49,12 +47,22 @@
   (+ (* (dec row) (side board))
      (dec col)))
 
+(defn parse-move
+  "Returns a move from a valid user move command."
+  [input]
+  (when-let [[_ row col] (re-find #"^(-?\d+) (-?\d+)$" input)]
+    (map #(Integer/parseInt %) (list row col))))
+
 (defn valid-move?
-  "Returns true if the move references an empty square. Returns logical false
-   if the indices are out of bounds or the square is already used."
-  [move board]
-  (and (valid-index? move board)
-       (= \_ (board (move->index move board)))))
+  "A correctly formatted move is: \"row col\": both numeric, 1-based,
+   indices.
+   Returns true if the move is valid and it references an empty square, false
+   otherwise."
+  [input board]
+  (if-let [move (parse-move input)]
+    (and (valid-index? move board)
+         (= \_ (board (move->index move board))))
+    false))
 
 (defn- rows
   [board]
@@ -121,10 +129,9 @@
     (println (str "Player " (next-player player) " wins!"))
 
     (empty-cells? board)
-    (let [move (read-move player)]
-      (if (valid-move? move board)
-
-        (recur (step move player board)
+    (let [command (read-command player)]
+      (if (valid-move? command board)
+        (recur (step (parse-move command) player board)
                (next-player player))
 
         (do

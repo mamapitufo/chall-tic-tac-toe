@@ -19,19 +19,19 @@
 (deftest correctly-detect-valid-move
   (testing "valid-move? should allow a valid move."
     (are [move] (true? (valid-move? move data/in-progress))
-         [1 1]
-         [3 3]
-         [2 3])))
+         "1 1"
+         "3 3"
+         "2 3")))
 
 (deftest correctly-detect-invalid-move
   (testing "valid-move? should return logical false for invalid-moves."
     (are [move] (false? (boolean (valid-move? move data/in-progress)))
-         [1 2]
-         [1 5]
-         [0 0]
-         [7 2]
-         [2 2]
-         [-3 2])))
+         "1 2"
+         "1 5"
+         "0 0"
+         "7 2"
+         "2 2"
+         "-3 2")))
 
 ;;----- empty-cells?
 (deftest identify-full-board
