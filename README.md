@@ -16,6 +16,11 @@ You need Leiningen to run it:
   it would be easier to manage the lookups and change the dimensions of
   the board. I'm happy with some aspects, but I don't like the `side`
   function or the `rows` helper.
+* At some point I started moving some of the functions to their own
+  modules (board related functions, screen rendering functions, etc),
+  but then I thought it wasn't necessary for such a small program.
+* I'm not too happy with the `cond` and `if`'s in the game loop, but
+  couldn't come up with a different solution.
 
 ## License
 
