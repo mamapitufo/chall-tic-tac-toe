@@ -21,6 +21,8 @@ You need Leiningen to run it:
   but then I thought it wasn't necessary for such a small program.
 * I'm not too happy with the `cond` and `if`'s in the game loop, but
   couldn't come up with a different solution.
+* The functions for saving and loading games are in `tic-tac-toe.persist`,
+  but I could not complete the command processing for user input on time.
 
 ## License
 
